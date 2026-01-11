@@ -5,14 +5,25 @@
     "signature": "Mk9wtKDGs5XfNfhC1ZTgoP+Xxs2Ew/wLahMWOkGh7J8acKEHj/pN+ljMM46J9L8BZDGhuYPfafkNK66fr/JzDxs="
   },
   "frame": {
+    "name": "Tempo Wallet",
     "version": "1",
-    "name": "Example Frame",
-    "iconUrl": "https://tempo.flowstable.in/icon.jpeg",
+    "iconUrl": "https://tempo.flowstable.in/tempoflow-logo.png",
     "homeUrl": "https://tempo.flowstable.in",
-    "imageUrl": "https://tempo.flowstable.in/icon.jpeg",
-    "buttonTitle": "Check this out",
-    "splashImageUrl": "https://tempo.flowstable.in/icon.png",
-    "splashBackgroundColor": "#eeccff",
-    "webhookUrl": "https://flowtempo-wallet-web.vercel.app/api/webhook"
+    "subtitle": "Tempo.xyz",
+    "description": "Do Testnet Activites on tempo.xyz testnet",
+    "primaryCategory": "utility",
+    "imageUrl": "https://tempo.flowstable.in/tempoflow-logo.png",
+    "splashImageUrl": "https://tempo.flowstable.in/tempoflow-logo.png",
+    "splashBackgroundColor": "#000009",
+    "tags": [
+      "testnet",
+      "utility",
+      "tempo",
+      "tempoxyz"
+    ],
+    "tagline": "tempo.xyz",
+    "buttonTitle": "Open TempoWallet",
+    "ogTitle": "FlowTempo Wallet",
+    "webhookUrl": "https://tempo.flowstable.in/api/webhook"
   }
 }
