@@ -233,10 +233,8 @@ export class SwapFeature implements Feature {
         try {
             outEl.placeholder = 'Fetching...';
 
-            // @ts-ignore
-            const tokenInAddr = CONFIG.TOKENS[inSym];
-            // @ts-ignore
-            const tokenOutAddr = CONFIG.TOKENS[outSym];
+            const tokenInAddr = inSym;
+            const tokenOutAddr = outSym;
 
             const provider = BlockchainService.getInstance().provider;
             const dex = new Contract(CONFIG.SYSTEM_CONTRACTS.STABLECOIN_DEX, STABLECOIN_DEX_ABI, provider);
@@ -277,15 +275,13 @@ export class SwapFeature implements Feature {
             btn.innerHTML = `<span>Executing...</span>`;
 
             const signer = await BlockchainService.getInstance().getSigner();
-            // @ts-ignore
-            const tokenIn = CONFIG.TOKENS[inSym];
-            // @ts-ignore
-            const tokenOut = CONFIG.TOKENS[outSym];
+            const tokenInAddr = inSym;
+            const tokenOutAddr = outSym;
 
             this.log(`Swapping ${amountVal} ${inSym} → ${outSym}`);
 
             const dex = new Contract(CONFIG.SYSTEM_CONTRACTS.STABLECOIN_DEX, STABLECOIN_DEX_ABI, signer);
-            const tokenInContract = new Contract(tokenIn, ERC20_ABI, signer);
+            const tokenInContract = new Contract(tokenInAddr, ERC20_ABI, signer);
 
             const decimalsIn = await tokenInContract.decimals();
             const amountIn = parseUnits(amountVal, decimalsIn);
@@ -304,7 +300,7 @@ export class SwapFeature implements Feature {
 
             let minOut = BigInt(0);
             try {
-                const quote = await dex.quoteSwapExactAmountIn(tokenIn, tokenOut, amountIn);
+                const quote = await dex.quoteSwapExactAmountIn(tokenInAddr, tokenOutAddr, amountIn);
                 if (quote > 0) {
                     minOut = (quote * BigInt(Math.floor((100 - this.slippageTolerance) * 100))) / BigInt(10000);
                 }
@@ -320,7 +316,7 @@ export class SwapFeature implements Feature {
             }
 
             this.log('Sending swap transaction...');
-            const tx = await dex.swapExactAmountIn(tokenIn, tokenOut, amountIn, minOut);
+            const tx = await dex.swapExactAmountIn(tokenInAddr, tokenOutAddr, amountIn, minOut);
             this.log(`TX: <a href="${CONFIG.EXPLORER_URL}/tx/${tx.hash}" target="_blank" style="color: var(--color-text-link);">${tx.hash.substring(0, 10)}...</a>`, 'info');
             await tx.wait();
 
