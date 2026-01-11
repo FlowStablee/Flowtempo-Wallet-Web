@@ -3,7 +3,8 @@
     "header": "eyJmaWQiOjg0NTYyMywidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDhiM2JhMjBGYzEwNGY4ZGJGY0Y0QTgwNjJjRjJhRjhBMWZkOTY2N2MifQ",
     "payload": "eyJkb21haW4iOiJ0ZW1wby5mbG93c3RhYmxlLmluIn0",
     "signature": "Mk9wtKDGs5XfNfhC1ZTgoP+Xxs2Ew/wLahMWOkGh7J8acKEHj/pN+ljMM46J9L8BZDGhuYPfafkNK66fr/JzDxs="
-  },
+  }
+},
   "frame": {
     "name": "Tempo Wallet",
     "version": "1",
