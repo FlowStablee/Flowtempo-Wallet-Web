@@ -337,7 +337,18 @@ export function renderDashboard(container: HTMLElement) {
             
             /* Mobile Menu Overlay */
             #mobile-menu-overlay {
-                top: 0; left: 0; right: 0; bottom: 0;
+                position: fixed;
+                top: 0; 
+                left: 0; 
+                right: 0; 
+                bottom: 0;
+                background: rgba(10, 10, 15, 0.98);
+                backdrop-filter: blur(20px);
+                z-index: 100;
+                transform: translateY(100%);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+                flex-direction: column;
             }
             #mobile-menu-overlay.open {
                 transform: translateY(0);
