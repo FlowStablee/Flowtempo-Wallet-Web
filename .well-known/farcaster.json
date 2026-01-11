@@ -13,6 +13,6 @@
     "buttonTitle": "Check this out",
     "splashImageUrl": "https://tempo.flowstable.in/icon.png",
     "splashBackgroundColor": "#eeccff",
-    "webhookUrl": "https://tempo.flowstable.in/api/webhook"
+    "webhookUrl": "https://flowtempo-wallet-web.vercel.app/api/webhook"
   }
 }
