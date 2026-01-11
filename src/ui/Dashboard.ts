@@ -267,7 +267,7 @@ export function renderDashboard(container: HTMLElement) {
                 background: rgba(10, 10, 15, 0.98);
                 border-top: 1px solid rgba(139, 92, 246, 0.1);
                 padding: 8px;
-                z-index: 50;
+                z-index: 9999; /* Ensure it sits above everything except overlay */
                 backdrop-filter: blur(20px);
             }
             
@@ -344,7 +344,7 @@ export function renderDashboard(container: HTMLElement) {
                 bottom: 0;
                 background: rgba(10, 10, 15, 0.98);
                 backdrop-filter: blur(20px);
-                z-index: 100;
+                z-index: 20000; /* Super high z-index */
                 transform: translateY(100%);
                 transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 display: flex;
@@ -458,26 +458,33 @@ export function renderDashboard(container: HTMLElement) {
             ${getIcon('menu', 22)}
             <span>Menu</span>
         `;
-        menuBtn.id = 'mobile-menu-trigger';
-
-        // Direct event listener
-        menuBtn.onclick = (e) => {
-            e.stopPropagation(); // Prevent bubbling issues
+        // Direct event listener for Menu
+        const toggleMenu = (e: Event) => {
+            e.preventDefault();
+            e.stopPropagation();
             const overlay = document.getElementById('mobile-menu-overlay');
             if (overlay) {
+                overlay.style.transform = 'translateY(0)';
                 overlay.classList.add('open');
-                console.log("Mobile menu opened");
-            } else {
-                console.error("Mobile menu overlay not found");
             }
         };
+        menuBtn.addEventListener('click', toggleMenu);
+        menuBtn.addEventListener('touchstart', toggleMenu, { passive: false });
 
         mobileNav.appendChild(menuBtn);
+
+        // APPEND TO BODY for true fixed positioning
+        // Check if exists first to avoid duplicates
+        const existingNav = document.querySelector('.mobile-nav');
+        if (existingNav) existingNav.remove();
+        document.body.appendChild(mobileNav);
     }
 
     // Populate Mobile Menu Features Grid
     const mobileMenuFeatures = document.getElementById('mobile-menu-features');
     if (mobileMenuFeatures) {
+        // Clear existing to avoid duplicates
+        mobileMenuFeatures.innerHTML = '';
         featureManager.getAllFeatures().forEach(feature => {
             const iconName = featureIcons[feature.id] || 'dashboard';
             const btn = document.createElement('button');
@@ -488,19 +495,23 @@ export function renderDashboard(container: HTMLElement) {
             `;
             btn.onclick = () => {
                 activateFeature(feature.id, feature.name);
-                document.getElementById('mobile-menu-overlay')?.classList.remove('open');
+                const overlay = document.getElementById('mobile-menu-overlay');
+                if (overlay) {
+                    overlay.classList.remove('open');
+                    overlay.style.transform = ''; // Clear inline style
+                }
             };
             mobileMenuFeatures.appendChild(btn);
         });
     }
 
-    // Mobile Menu Toggle Logic
-    const mobileMenu = document.getElementById('mobile-menu-overlay');
-    document.getElementById('mobile-menu-trigger')?.addEventListener('click', () => {
-        mobileMenu?.classList.add('open');
-    });
+    // Mobile Menu Toggle Logic (Cleanup old listeners if any, and handle Close)
+    const overlay = document.getElementById('mobile-menu-overlay');
     document.getElementById('close-mobile-menu')?.addEventListener('click', () => {
-        mobileMenu?.classList.remove('open');
+        if (overlay) {
+            overlay.classList.remove('open');
+            overlay.style.transform = '';
+        }
     });
 
     // Activate Feature Helper
@@ -530,7 +541,11 @@ export function renderDashboard(container: HTMLElement) {
         step1?.classList.remove('hidden');
         step2?.classList.add('hidden');
         if (pkDisplay) pkDisplay.textContent = '';
-        mobileMenu?.classList.remove('open'); // Close mobile menu if open
+        const overlay = document.getElementById('mobile-menu-overlay');
+        if (overlay) {
+            overlay.classList.remove('open');
+            overlay.style.transform = '';
+        }
     };
 
     document.getElementById('export-btn')?.addEventListener('click', openExportModal);
@@ -579,7 +594,11 @@ export function renderDashboard(container: HTMLElement) {
     const openResetModal = () => {
         if (resetModal && resetModal.parentElement !== document.body) document.body.appendChild(resetModal);
         resetModal?.classList.remove('hidden');
-        mobileMenu?.classList.remove('open');
+        const overlay = document.getElementById('mobile-menu-overlay');
+        if (overlay) {
+            overlay.classList.remove('open');
+            overlay.style.transform = '';
+        }
     };
 
     document.getElementById('nuke-btn')?.addEventListener('click', openResetModal);
@@ -593,5 +612,5 @@ export function renderDashboard(container: HTMLElement) {
         AccountManager.clearWallet();
         window.location.reload();
     });
-}
 
+}
