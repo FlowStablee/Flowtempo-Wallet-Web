@@ -459,6 +459,19 @@ export function renderDashboard(container: HTMLElement) {
             <span>Menu</span>
         `;
         menuBtn.id = 'mobile-menu-trigger';
+
+        // Direct event listener
+        menuBtn.onclick = (e) => {
+            e.stopPropagation(); // Prevent bubbling issues
+            const overlay = document.getElementById('mobile-menu-overlay');
+            if (overlay) {
+                overlay.classList.add('open');
+                console.log("Mobile menu opened");
+            } else {
+                console.error("Mobile menu overlay not found");
+            }
+        };
+
         mobileNav.appendChild(menuBtn);
     }
 
